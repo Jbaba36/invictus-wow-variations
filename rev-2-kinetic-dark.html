@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invictus — Kinetic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #182652;
+    --navy-deep: #0D1421;
+    --navy-mid: #1E3264;
+    --orange: #E77723;
+    --green: #2E7D32;
+    --white: #FFFFFF;
+    --off: #F7F8FA;
+    --cream: #F5F0E8;
+    --text: #1A1A2E;
+    --text-muted: #6B7080;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy-deep);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ── LOGO ── */
+  .logo-mark {
+    display: inline-block; width: 32px; height: 32px;
+    position: relative; flex-shrink: 0;
+  }
+  .logo-mark-outer {
+    position: absolute; inset: 0;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    background: var(--white);
+  }
+  .logo-mark-inner {
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    background: var(--orange);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+    height: 72px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 60px;
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(13,20,33,0.96);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(231,119,35,0.15);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700; color: var(--white);
+    letter-spacing: 2px;
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; align-items: center; }
+  .nav-links a {
+    color: rgba(255,255,255,0.5); text-decoration: none;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: transparent !important;
+    color: var(--orange) !important;
+    border: 1px solid var(--orange) !important;
+    padding: 9px 22px !important;
+    font-weight: 600 !important; font-size: 12px !important;
+    letter-spacing: 1px; text-transform: uppercase;
+    transition: all 0.25s !important; cursor: pointer;
+  }
+  .nav-cta:hover { background: var(--orange) !important; color: var(--navy-deep) !important; }
+
+  /* ── HERO ── */
+  .hero-full {
+    min-height: 100vh;
+    background: var(--navy-deep);
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    padding: 0 60px;
+  }
+  /* Grid pattern bg */
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(231,119,35,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(231,119,35,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  /* Large watermark text */
+  .hero-watermark {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(120px, 18vw, 260px);
+    font-weight: 900; color: rgba(255,255,255,0.02);
+    white-space: nowrap; letter-spacing: 10px;
+    user-select: none; pointer-events: none;
+  }
+  /* Diagonal accent stripe */
+  .hero-stripe {
+    position: absolute;
+    top: 0; right: 30%; bottom: 0; width: 2px;
+    background: linear-gradient(180deg, transparent 0%, var(--orange) 30%, var(--orange) 70%, transparent 100%);
+    opacity: 0.3;
+  }
+  .hero-stripe-2 {
+    position: absolute;
+    top: 0; right: calc(30% + 6px); bottom: 0; width: 1px;
+    background: linear-gradient(180deg, transparent 0%, rgba(231,119,35,0.5) 50%, transparent 100%);
+  }
+  .hero-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    flex: 1; align-items: center;
+    padding-top: 72px;
+  }
+  .hero-content { position: relative; z-index: 2; padding: 80px 0; }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 40px; height: 1px; background: var(--orange);
+  }
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 7vw, 100px); font-weight: 900;
+    color: var(--white); line-height: 0.92;
+    letter-spacing: -2px; margin-bottom: 40px;
+  }
+  .hero-headline em {
+    font-style: italic; font-weight: 400;
+    color: var(--orange);
+    display: block;
+  }
+  .hero-body {
+    font-size: 16px; color: rgba(255,255,255,0.55);
+    line-height: 1.85; max-width: 460px; margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 20px; align-items: center; }
+  .btn-orange {
+    background: var(--orange); color: var(--navy-deep); padding: 16px 36px;
+    font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; display: inline-block;
+    transition: all 0.25s; border: 2px solid var(--orange);
+    cursor: pointer;
+  }
+  .btn-orange:hover { background: transparent; color: var(--orange); }
+  .btn-ghost {
+    color: rgba(255,255,255,0.45); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 3px; transition: all 0.2s;
+  }
+  .btn-ghost:hover { color: var(--orange); border-color: var(--orange); }
+  /* Stat badges */
+  .hero-badges {
+    display: flex; gap: 16px; margin-top: 56px; flex-wrap: wrap;
+  }
+  .hero-badge {
+    padding: 14px 20px;
+    border: 1px solid rgba(231,119,35,0.2);
+    background: rgba(231,119,35,0.05);
+    transition: all 0.3s; cursor: default;
+  }
+  .hero-badge:hover { background: rgba(231,119,35,0.1); border-color: rgba(231,119,35,0.4); }
+  .hero-badge-num {
+    font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900;
+    color: var(--orange); line-height: 1;
+  }
+  .hero-badge-label {
+    font-family: 'Space Mono', monospace; font-size: 8px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.35); margin-top: 4px;
+  }
+  /* Right side geo art */
+  .hero-geo {
+    position: relative; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .geo-circle {
+    width: 380px; height: 380px; border-radius: 50%;
+    border: 1px solid rgba(231,119,35,0.15);
+    position: relative; display: flex; align-items: center; justify-content: center;
+    animation: geo-rotate 20s linear infinite;
+  }
+  .geo-circle::before {
+    content: '';
+    position: absolute; width: 300px; height: 300px; border-radius: 50%;
+    border: 1px solid rgba(231,119,35,0.1);
+    animation: geo-rotate 15s linear infinite reverse;
+  }
+  .geo-circle::after {
+    content: '';
+    position: absolute; width: 220px; height: 220px; border-radius: 50%;
+    border: 1px solid rgba(231,119,35,0.08);
+  }
+  .geo-center {
+    width: 120px; height: 120px;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    background: var(--orange);
+    animation: geo-pulse 3s ease-in-out infinite;
+  }
+  .geo-dot {
+    position: absolute; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--orange);
+  }
+  @keyframes geo-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes geo-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.92); }
+  }
+  /* Bottom bar */
+  .hero-bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(231,119,35,0.12);
+  }
+  .hero-bottom-stat {
+    padding: 28px 60px;
+    border-right: 1px solid rgba(231,119,35,0.12);
+    display: flex; align-items: center; gap: 20px;
+  }
+  .hero-bottom-stat:last-child { border-right: none; }
+  .hbs-num {
+    font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900;
+    color: var(--white); line-height: 1;
+  }
+  .hbs-num em { font-style: italic; color: var(--orange); }
+  .hbs-label {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-band {
+    background: var(--navy);
+    padding: 18px 0; overflow: hidden;
+    border-top: 1px solid rgba(231,119,35,0.12);
+    border-bottom: 1px solid rgba(231,119,35,0.12);
+  }
+  .marquee-track {
+    display: flex; gap: 60px; animation: marquee-scroll 25s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700; font-style: italic;
+    color: rgba(255,255,255,0.35); letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 60px; flex-shrink: 0;
+  }
+  .marquee-sep {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--orange); flex-shrink: 0;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SERVICES HORIZONTAL ── */
+  .services-kinetic {
+    padding: 120px 60px;
+    background: var(--navy-deep);
+  }
+  .sk-header {
+    margin-bottom: 80px;
+  }
+  .sk-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .sk-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--orange); }
+  .sk-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px); font-weight: 900;
+    color: var(--white); line-height: 1.0; letter-spacing: -1px;
+    max-width: 700px;
+  }
+  .sk-heading em { font-style: italic; font-weight: 400; color: var(--orange); }
+  .svc-row {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 40px; align-items: center;
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .svc-row:first-of-type { border-top: 1px solid rgba(255,255,255,0.05); }
+  .svc-row:hover { background: rgba(231,119,35,0.04); padding-left: 24px; padding-right: 24px; margin: 0 -24px; }
+  .svc-row:hover .svc-row-num { color: rgba(231,119,35,0.3); }
+  .svc-row:hover .svc-row-arrow { color: var(--orange); transform: translateX(8px); }
+  .svc-row-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px; font-weight: 900;
+    color: rgba(255,255,255,0.06); line-height: 1;
+    transition: color 0.3s;
+  }
+  .svc-row-info {}
+  .svc-row-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 2.5vw, 32px); font-weight: 700;
+    color: var(--white); margin-bottom: 8px;
+  }
+  .svc-row-desc {
+    font-size: 14px; color: rgba(255,255,255,0.4);
+    line-height: 1.6; font-weight: 300;
+    max-width: 600px;
+  }
+  .svc-row-tag {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--orange); border: 1px solid rgba(231,119,35,0.3);
+    padding: 5px 14px; white-space: nowrap;
+  }
+  .svc-row-arrow {
+    color: rgba(255,255,255,0.2);
+    transition: color 0.3s, transform 0.3s;
+  }
+
+  /* ── NUMBERS ── */
+  .numbers-dark {
+    background: var(--navy);
+    padding: 100px 60px;
+    position: relative; overflow: hidden;
+  }
+  .numbers-dark::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  }
+  .nd-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; max-width: 1100px; margin: 0 auto;
+  }
+  .nd-item {
+    padding: 48px 40px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+  .nd-item:last-child { border-right: none; }
+  .nd-item::after {
+    content: '';
+    position: absolute; bottom: 0; left: 40px; right: 40px; height: 2px;
+    background: var(--orange); transform: scaleX(0);
+    transition: transform 0.5s ease;
+  }
+  .nd-item:hover::after { transform: scaleX(1); }
+  .nd-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(64px, 7vw, 96px); font-weight: 900;
+    color: var(--white); line-height: 1; margin-bottom: 12px;
+  }
+  .nd-num em { font-style: italic; color: var(--orange); }
+  .nd-label {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-bottom: 6px;
+  }
+  .nd-desc {
+    font-size: 13px; color: rgba(255,255,255,0.25);
+    font-weight: 300; line-height: 1.5;
+  }
+
+  /* ── CASE STUDY TEASER ── */
+  .case-teaser {
+    background: var(--navy-deep);
+    padding: 120px 60px;
+  }
+  .ct-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 60px;
+  }
+  .ct-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .ct-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--orange); }
+  .ct-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 900;
+    color: var(--white);
+  }
+  .ct-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+  }
+  .ct-card {
+    background: var(--navy);
+    padding: 60px 48px;
+    position: relative; overflow: hidden;
+    transition: background 0.3s; cursor: pointer;
+  }
+  .ct-card:hover { background: var(--navy-mid); }
+  .ct-card-tag {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 20px;
+  }
+  .ct-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; color: var(--white);
+    margin-bottom: 16px; line-height: 1.2;
+  }
+  .ct-card-desc {
+    font-size: 14px; color: rgba(255,255,255,0.4);
+    line-height: 1.7; font-weight: 300;
+  }
+  .ct-card-metric {
+    margin-top: 32px;
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .ct-metric-num {
+    font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900;
+    color: var(--orange);
+  }
+  .ct-metric-label {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+  .ct-card-arrow {
+    position: absolute; top: 40px; right: 40px;
+    color: rgba(255,255,255,0.15);
+    transition: color 0.3s, transform 0.3s;
+  }
+  .ct-card:hover .ct-card-arrow { color: var(--orange); transform: translate(4px, -4px); }
+
+  /* ── TESTIMONIAL ── */
+  .testimonial-dark {
+    background: var(--navy);
+    padding: 120px 60px;
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 60px; align-items: start;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .test-side-label {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--orange); writing-mode: vertical-rl;
+    text-orientation: mixed; transform: rotate(180deg);
+    padding-top: 12px;
+    border-top: 2px solid var(--orange);
+  }
+  .test-body {}
+  .test-quote-icon {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; color: var(--orange); opacity: 0.2;
+    line-height: 0.5; margin-bottom: 24px;
+  }
+  .test-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.5vw, 32px); font-weight: 400; font-style: italic;
+    color: var(--white); line-height: 1.5; margin-bottom: 48px;
+  }
+  .test-attr {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .test-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--navy-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 16px;
+    color: var(--orange); font-weight: 700;
+    border: 2px solid rgba(231,119,35,0.3);
+  }
+  .test-name {
+    font-weight: 600; font-size: 15px; color: var(--white);
+  }
+  .test-role {
+    font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 2px;
+    font-weight: 300;
+  }
+
+  /* ── CTA ── */
+  .cta-dark {
+    background: var(--navy-deep);
+    padding: 120px 60px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+    border-top: 1px solid rgba(231,119,35,0.1);
+  }
+  .cta-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 5vw, 68px); font-weight: 900;
+    color: var(--white); line-height: 1.0; letter-spacing: -1px;
+  }
+  .cta-heading em { font-style: italic; font-weight: 400; color: var(--orange); }
+  .cta-deco {
+    width: 80px; height: 2px; background: var(--orange);
+    margin: 32px 0;
+  }
+  .cta-phone {
+    font-family: 'Playfair Display', serif; font-size: 20px;
+    font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 1px;
+  }
+  .cta-text {
+    font-size: 15px; color: rgba(255,255,255,0.4);
+    line-height: 1.8; margin-bottom: 36px; font-weight: 300;
+  }
+  .cta-btns { display: flex; gap: 16px; align-items: center; }
+  .btn-navy {
+    background: var(--navy); color: var(--white); padding: 16px 36px;
+    font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; display: inline-block;
+    transition: all 0.25s; border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+  }
+  .btn-navy:hover { border-color: var(--orange); color: var(--orange); }
+  .btn-ghost-light {
+    color: rgba(255,255,255,0.4); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 2px; transition: all 0.2s;
+  }
+  .btn-ghost-light:hover { color: var(--orange); border-color: var(--orange); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy-deep);
+    padding: 40px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .footer-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700; color: var(--white);
+    letter-spacing: 2px;
+  }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-geo { display: none; }
+    .hero-bottom-bar { grid-template-columns: repeat(3, 1fr); }
+    .hero-bottom-stat { padding: 24px 32px; }
+    .sk-heading { max-width: 100%; }
+    .nd-grid { grid-template-columns: repeat(2, 1fr); }
+    .nd-item { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .ct-grid { grid-template-columns: 1fr; }
+    .testimonial-dark { grid-template-columns: 1fr; }
+    .test-side-label { display: none; }
+    .cta-dark { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav, .hero-full { padding-left: 24px; padding-right: 24px; }
+    .hero-full { padding-top: 72px; }
+    .hero-content { padding: 60px 0; }
+    .services-kinetic, .numbers-dark, .case-teaser,
+    .testimonial-dark, .cta-dark, footer { padding-left: 24px; padding-right: 24px; }
+    .hero-bottom-bar { grid-template-columns: 1fr; }
+    .hero-bottom-stat { border-right: none; border-bottom: 1px solid rgba(231,119,35,0.12); }
+    .hero-bottom-stat:last-child { border-bottom: none; }
+    .nd-grid { grid-template-columns: 1fr; }
+    .svc-row { grid-template-columns: 80px 1fr; }
+    .svc-row-tag { display: none; }
+    .svc-row-arrow { display: none; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <div class="logo-mark-outer"></div>
+      <div class="logo-mark-inner"></div>
+    </div>
+    <span class="nav-logo-text">INVICTUS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Case Studies</a></li>
+    <li><a href="#">Approach</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero-full">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-watermark">INVICTUS</div>
+  <div class="hero-stripe"></div>
+  <div class="hero-stripe-2"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Est. 2019 · London, UK</div>
+      <h1 class="hero-headline">
+        We
+        <em>conquer</em>
+        complexity.
+      </h1>
+      <p class="hero-body">Invictus delivers world-class programme and project management across the most demanding sectors — transforming what seems impossible into measurable, sustainable outcomes.</p>
+      <div class="hero-btns">
+        <a href="#" class="btn-orange">View Our Work</a>
+        <a href="#" class="btn-ghost">Meet the team</a>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge">
+          <div class="hero-badge-num">$2.4B</div>
+          <div class="hero-badge-label">Programme Value</div>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-badge-num">94%</div>
+          <div class="hero-badge-label">On-Time Rate</div>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-badge-num">72</div>
+          <div class="hero-badge-label">Client NPS</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-geo">
+      <div class="geo-circle">
+        <div class="geo-center"></div>
+        <div class="geo-dot" style="top:0;left:50%;transform:translateX(-50%)"></div>
+        <div class="geo-dot" style="bottom:0;left:50%;transform:translateX(-50%)"></div>
+        <div class="geo-dot" style="left:0;top:50%;transform:translateY(-50%)"></div>
+        <div class="geo-dot" style="right:0;top:50%;transform:translateY(-50%)"></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bottom-bar">
+    <div class="hero-bottom-stat">
+      <div class="hbs-num">284</div>
+      <div>
+        <div class="hbs-label">Programmes Delivered</div>
+        <div class="hbs-label">across 12 sectors</div>
+      </div>
+    </div>
+    <div class="hero-bottom-stat">
+      <div class="hbs-num">89<em>%</em></div>
+      <div>
+        <div class="hbs-label">Recovery Rate</div>
+        <div class="hbs-label">programmes rescued</div>
+      </div>
+    </div>
+    <div class="hero-bottom-stat">
+      <div class="hbs-num">72</div>
+      <div>
+        <div class="hbs-label">Net Promoter Score</div>
+        <div class="hbs-label">top quartile globally</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-band">
+  <div class="marquee-track">
+    <span class="marquee-item">Programme Management <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Agile Delivery <span class="marquee-sep"></span></span>
+    <span class="marquee-item">PMO Design <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Risk &amp; Governance <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Stakeholder Management <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Project Recovery <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Portfolio Oversight <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Change Management <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Programme Management <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Agile Delivery <span class="marquee-sep"></span></span>
+    <span class="marquee-item">PMO Design <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Risk &amp; Governance <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Stakeholder Management <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Project Recovery <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Portfolio Oversight <span class="marquee-sep"></span></span>
+    <span class="marquee-item">Change Management <span class="marquee-sep"></span></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services-kinetic">
+  <div class="sk-header reveal">
+    <div class="sk-eyebrow">The Six Disciplines</div>
+    <h2 class="sk-heading">Precision. <em>Discipline.</em> Delivery.</h2>
+  </div>
+
+  <div class="svc-row reveal">
+    <div class="svc-row-num">01</div>
+    <div class="svc-row-info">
+      <div class="svc-row-title">Programme &amp; Portfolio Management</div>
+      <div class="svc-row-desc">End-to-end oversight of complex, multi-workstream programmes — from governance design to delivery execution.</div>
+    </div>
+    <div class="svc-row-tag">Flagship</div>
+    <div class="svc-row-arrow">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="svc-row reveal">
+    <div class="svc-row-num">02</div>
+    <div class="svc-row-info">
+      <div class="svc-row-title">Agile &amp; Hybrid Delivery</div>
+      <div class="svc-row-desc">Scalable frameworks that flex to your culture without sacrificing the discipline that gets results.</div>
+    </div>
+    <div class="svc-row-tag">Core</div>
+    <div class="svc-row-arrow">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="svc-row reveal">
+    <div class="svc-row-num">03</div>
+    <div class="svc-row-info">
+      <div class="svc-row-title">Project Recovery &amp; Turnaround</div>
+      <div class="svc-row-desc">Rapid diagnosis and decisive intervention. We stabilise, re-baseline, and deliver where others have walked away.</div>
+    </div>
+    <div class="svc-row-tag">Specialist</div>
+    <div class="svc-row-arrow">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="svc-row reveal">
+    <div class="svc-row-num">04</div>
+    <div class="svc-row-info">
+      <div class="svc-row-title">PMO Design &amp; Implementation</div>
+      <div class="svc-row-desc">PMOs that become your operational backbone — not another layer of bureaucracy.</div>
+    </div>
+    <div class="svc-row-tag">Core</div>
+    <div class="svc-row-arrow">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="svc-row reveal">
+    <div class="svc-row-num">05</div>
+    <div class="svc-row-info">
+      <div class="svc-row-title">Stakeholder &amp; Change Management</div>
+      <div class="svc-row-desc">Managing the human dimension — executive alignment through to front-line adoption.</div>
+    </div>
+    <div class="svc-row-tag">Core</div>
+    <div class="svc-row-arrow">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+
+  <div class="svc-row reveal">
+    <div class="svc-row-num">06</div>
+    <div class="svc-row-info">
+      <div class="svc-row-title">Risk, Governance &amp; Reporting</div>
+      <div class="svc-row-desc">The framework that holds everything together. Robust governance that gives leadership real clarity.</div>
+    </div>
+    <div class="svc-row-tag">Core</div>
+    <div class="svc-row-arrow">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="numbers-dark">
+  <div class="nd-grid">
+    <div class="nd-item reveal">
+      <div class="nd-label">Programmes Delivered</div>
+      <div class="nd-num">284</div>
+      <div class="nd-desc">across 12 sectors globally</div>
+    </div>
+    <div class="nd-item reveal">
+      <div class="nd-label">On-Time Rate</div>
+      <div class="nd-num">94<em>%</em></div>
+      <div class="nd-desc">vs 67% industry average</div>
+    </div>
+    <div class="nd-item reveal">
+      <div class="nd-label">Recovery Rate</div>
+      <div class="nd-num">89<em>%</em></div>
+      <div class="nd-desc">programmes successfully rescued</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY TEASER -->
+<section class="case-teaser">
+  <div class="ct-header reveal">
+    <div>
+      <div class="ct-eyebrow">Selected Work</div>
+      <h2 class="ct-heading">Outcomes that<br>speak for themselves.</h2>
+    </div>
+  </div>
+  <div class="ct-grid">
+    <div class="ct-card reveal">
+      <div class="ct-card-tag">Infrastructure</div>
+      <div class="ct-card-title">£1.2B Rail Modernisation Programme</div>
+      <div class="ct-card-desc">End-to-end programme recovery and delivery of a critical national infrastructure project previously 18 months behind schedule.</div>
+      <div class="ct-card-metric">
+        <div class="ct-metric-num">£1.2B</div>
+        <div class="ct-metric-label">Programme Value</div>
+      </div>
+      <div class="ct-card-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+    <div class="ct-card reveal">
+      <div class="ct-card-tag">Healthcare</div>
+      <div class="ct-card-title">NHS Digital Transformation Portfolio</div>
+      <div class="ct-card-desc">PMO design and implementation across a 40-workstream digital transformation affecting 1.6M patients.</div>
+      <div class="ct-card-metric">
+        <div class="ct-metric-num">40</div>
+        <div class="ct-metric-label">Workstreams Managed</div>
+      </div>
+      <div class="ct-card-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-dark">
+  <div class="test-side-label">Client Voice</div>
+  <div class="test-body reveal">
+    <div class="test-quote-icon">"</div>
+    <p class="test-text">Invictus didn't just recover our programme — they transformed how our entire organisation thinks about delivery. The discipline they brought was transformational at every level.</p>
+    <div class="test-attr">
+      <div class="test-avatar">JM</div>
+      <div>
+        <div class="test-name">James Morrison</div>
+        <div class="test-role">Chief Programme Officer · Global Infrastructure Group</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-dark">
+  <div class="reveal">
+    <h2 class="cta-heading">Ready to raise<br>the <em>standard?</em></h2>
+    <div class="cta-deco"></div>
+    <div class="cta-phone">+44 (0) 20 7946 0958</div>
+  </div>
+  <div class="reveal">
+    <p class="cta-text">Let's discuss your programme challenges with complete transparency. We'll tell you honestly where we can add value — and where we might not be the right fit. No hard sell. No fluff.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-navy">Start a Conversation</a>
+      <a href="#" class="btn-ghost-light">View case studies</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <div class="logo-mark">
+      <div class="logo-mark-outer"></div>
+      <div class="logo-mark-inner"></div>
+    </div>
+    INVICTUS
+  </div>
+  <div class="footer-copy">© 2025 Invictus Group. All rights reserved.</div>
+</footer>
+
+<script>
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invictus — Prestige</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #182652;
+    --navy-deep: #0D1421;
+    --navy-mid: #1E3264;
+    --orange: #E77723;
+    --green: #2E7D32;
+    --white: #FFFFFF;
+    --off: #F7F8FA;
+    --cream: #F5F0E8;
+    --text: #1A1A2E;
+    --text-muted: #6B7080;
+    --text-light: #9CA3AF;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── LOGO ── */
+  .logo-mark {
+    display: inline-block; width: 28px; height: 28px;
+    position: relative; flex-shrink: 0;
+  }
+  .logo-mark-outer {
+    position: absolute; inset: 0;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    background: var(--navy);
+  }
+  .logo-mark-inner {
+    position: absolute;
+    top: 4px; left: 4px; right: 4px; bottom: 4px;
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    background: var(--orange);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+    height: 68px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 60px;
+    background: rgba(255,255,255,0.96);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 1px 0 rgba(24,38,82,0.08); }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700; color: var(--navy);
+    letter-spacing: 3px;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta {
+    border: 1px solid var(--navy) !important;
+    color: var(--navy) !important;
+    padding: 9px 22px !important;
+    font-weight: 600 !important; font-size: 12px !important;
+    letter-spacing: 1px; text-transform: uppercase;
+    transition: all 0.25s !important; cursor: pointer;
+  }
+  .nav-cta:hover { background: var(--navy) !important; color: var(--white) !important; }
+
+  /* ── HERO SPLIT ── */
+  .hero-split {
+    min-height: 100vh; display: grid;
+    grid-template-columns: 55% 45%;
+    position: relative;
+  }
+  .hero-left {
+    background: var(--off);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 120px 80px 100px 60px;
+    position: relative; overflow: hidden;
+  }
+  /* Watermark */
+  .hero-watermark {
+    position: absolute;
+    bottom: -20px; left: -10px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(140px, 20vw, 240px);
+    font-weight: 900; color: rgba(24,38,82,0.04);
+    letter-spacing: -4px; line-height: 1;
+    user-select: none; pointer-events: none;
+    white-space: nowrap;
+  }
+  /* Vertical rule */
+  .hero-left::after {
+    content: '';
+    position: absolute; top: 80px; bottom: 80px; right: 0; width: 2px;
+    background: var(--orange);
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--orange); }
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 5.5vw, 84px); font-weight: 900;
+    color: var(--navy); line-height: 0.95; margin-bottom: 36px;
+    letter-spacing: -1px;
+  }
+  .hero-headline em {
+    font-style: italic; font-weight: 400;
+    color: var(--orange);
+    display: block;
+  }
+  .hero-body {
+    font-size: 16px; color: var(--text-muted);
+    line-height: 1.85; max-width: 440px; margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-btns { display: flex; gap: 20px; align-items: center; }
+  .btn-navy {
+    background: var(--navy); color: var(--white); padding: 16px 36px;
+    font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; display: inline-block;
+    transition: all 0.25s; border: 2px solid var(--navy);
+    cursor: pointer;
+  }
+  .btn-navy:hover { background: var(--orange); border-color: var(--orange); }
+  .btn-ghost {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+    border-bottom: 1px solid rgba(24,38,82,0.2);
+    padding-bottom: 2px; transition: all 0.2s;
+  }
+  .btn-ghost:hover { color: var(--orange); border-color: var(--orange); }
+
+  /* Right panel */
+  .hero-right {
+    background: var(--navy);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    padding: 80px 60px;
+  }
+  /* Geometric art */
+  .geo-art {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+  .geo-art::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border: 1px solid rgba(231,119,35,0.12);
+    transform: rotate(45deg);
+  }
+  .geo-art::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 200px; height: 200px;
+    border: 1px solid rgba(231,119,35,0.08);
+    transform: rotate(45deg);
+  }
+  /* Orange accent line */
+  .hero-accent-line {
+    position: absolute; top: 0; right: 0;
+    width: 3px; height: 100%;
+    background: var(--orange);
+  }
+  .hero-stats-stack {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; gap: 2px;
+    width: 100%; max-width: 320px;
+  }
+  .hero-stat-card {
+    background: rgba(255,255,255,0.04);
+    padding: 24px 28px;
+    border-left: 2px solid transparent;
+    transition: all 0.3s; cursor: default;
+  }
+  .hero-stat-card:hover {
+    background: rgba(231,119,35,0.1);
+    border-left-color: var(--orange);
+  }
+  .hsc-num {
+    font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900;
+    color: var(--white); line-height: 1; margin-bottom: 4px;
+  }
+  .hsc-num em { font-style: italic; color: var(--orange); }
+  .hsc-label {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--white);
+    border-top: 1px solid rgba(24,38,82,0.06);
+    border-bottom: 1px solid rgba(24,38,82,0.06);
+    padding: 0;
+    display: grid; grid-template-columns: repeat(6, 1fr);
+  }
+  .stats-bar-item {
+    padding: 28px 32px;
+    border-right: 1px solid rgba(24,38,82,0.06);
+    text-align: center;
+  }
+  .stats-bar-item:last-child { border-right: none; }
+  .sbi-num {
+    font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900;
+    color: var(--navy); line-height: 1;
+  }
+  .sbi-num em { font-style: italic; color: var(--orange); }
+  .sbi-label {
+    font-family: 'Space Mono', monospace; font-size: 8px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-light); margin-top: 4px;
+  }
+
+  /* ── SERVICES GRID ── */
+  .services-grid {
+    padding: 120px 60px;
+    background: var(--off);
+  }
+  .sg-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 60px;
+  }
+  .sg-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sg-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--orange); }
+  .sg-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 900;
+    color: var(--navy); line-height: 1.0; letter-spacing: -0.5px;
+  }
+  .sg-heading em { font-style: italic; font-weight: 400; color: var(--orange); }
+  .sg-desc {
+    font-size: 14px; color: var(--text-muted); line-height: 1.8;
+    max-width: 320px; font-weight: 300;
+  }
+  .svc-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .svc-card {
+    background: var(--white);
+    padding: 40px 36px;
+    position: relative; overflow: hidden;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .svc-card:hover { box-shadow: 0 8px 40px rgba(24,38,82,0.08); z-index: 2; }
+  .svc-card:hover .sc-num { color: rgba(231,119,35,0.12); }
+  .svc-card:hover .sc-title { color: var(--navy); }
+  .svc-card:hover .sc-arrow { color: var(--orange); transform: translate(4px, -4px); }
+  .sc-bg-num {
+    position: absolute; top: -10px; right: 16px;
+    font-family: 'Playfair Display', serif; font-size: 100px; font-weight: 900;
+    color: rgba(24,38,82,0.03); line-height: 1;
+    user-select: none; pointer-events: none;
+    transition: color 0.3s;
+  }
+  .sc-num {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 3px; color: var(--text-light);
+    margin-bottom: 20px; transition: color 0.3s;
+  }
+  .sc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700; color: var(--navy);
+    margin-bottom: 12px; line-height: 1.2;
+    transition: color 0.3s;
+  }
+  .sc-desc {
+    font-size: 13px; color: var(--text-muted); line-height: 1.7;
+    font-weight: 300; margin-bottom: 20px;
+  }
+  .sc-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--orange); border: 1px solid rgba(231,119,35,0.3);
+    padding: 4px 12px;
+  }
+  .sc-arrow {
+    position: absolute; top: 32px; right: 28px;
+    color: rgba(24,38,82,0.15);
+    transition: color 0.3s, transform 0.3s;
+  }
+
+  /* Featured service — full width */
+  .svc-featured {
+    grid-column: 1 / -1;
+    background: var(--navy);
+    padding: 48px 48px;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 40px; align-items: center;
+    margin-top: 2px;
+  }
+  .sf-info {}
+  .sf-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 12px;
+  }
+  .sf-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 36px); font-weight: 700;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .sf-desc {
+    font-size: 14px; color: rgba(255,255,255,0.5);
+    line-height: 1.7; font-weight: 300;
+    max-width: 560px;
+  }
+  .sf-stat {
+    text-align: right;
+  }
+  .sf-stat-num {
+    font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 900;
+    color: var(--orange); line-height: 1;
+  }
+  .sf-stat-label {
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin-top: 4px;
+  }
+
+  /* ── PROCESS BAND ── */
+  .process-band {
+    background: var(--navy);
+    padding: 100px 60px;
+    position: relative; overflow: hidden;
+  }
+  .process-band::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  }
+  .pb-header {
+    text-align: center; margin-bottom: 80px;
+  }
+  .pb-eyebrow {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+  }
+  .pb-eyebrow::before, .pb-eyebrow::after {
+    content: ''; width: 24px; height: 1px; background: var(--orange);
+  }
+  .pb-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px); font-weight: 900;
+    color: var(--white);
+  }
+  .pb-heading em { font-style: italic; font-weight: 400; color: var(--orange); }
+  .pb-steps {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; position: relative;
+  }
+  .pb-steps::before {
+    content: '';
+    position: absolute; top: 36px; left: 16.67%; right: 16.67%; height: 1px;
+    background: rgba(231,119,35,0.2);
+  }
+  .pb-step {
+    padding: 0 48px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+  .pb-step:last-child { border-right: none; }
+  .pb-step-num {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--navy-deep);
+    border: 1px solid rgba(231,119,35,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900;
+    color: var(--orange); margin-bottom: 28px;
+    position: relative; z-index: 2;
+  }
+  .pb-step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: var(--white);
+    margin-bottom: 12px;
+  }
+  .pb-step-desc {
+    font-size: 14px; color: rgba(255,255,255,0.4);
+    line-height: 1.7; font-weight: 300;
+  }
+
+  /* ── TESTIMONIAL ── */
+  .testimonial-prestige {
+    background: var(--white);
+    padding: 120px 60px;
+    display: grid; grid-template-columns: 60px 1fr;
+    gap: 60px; align-items: center;
+    border-top: 1px solid rgba(24,38,82,0.06);
+  }
+  .tp-side {
+    writing-mode: vertical-rl; text-orientation: mixed;
+    transform: rotate(180deg);
+    padding-top: 16px;
+    border-top: 2px solid var(--orange);
+    font-family: 'Space Mono', monospace; font-size: 9px;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--orange);
+  }
+  .tp-body {}
+  .tp-quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 100px; line-height: 0.5; color: var(--orange);
+    opacity: 0.15; margin-bottom: 20px;
+  }
+  .tp-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 2.5vw, 32px); font-weight: 400; font-style: italic;
+    color: var(--navy); line-height: 1.5; margin-bottom: 40px;
+  }
+  .tp-attr {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .tp-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 16px;
+    color: var(--orange); font-weight: 700;
+    border: 2px solid var(--orange);
+  }
+  .tp-name { font-weight: 600; font-size: 15px; color: var(--navy); }
+  .tp-role { font-size: 12px; color: var(--text-muted); margin-top: 2px; font-weight: 300; }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--off);
+    padding: 120px 60px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+  .cta-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px); font-weight: 900;
+    color: var(--navy); line-height: 1.0; letter-spacing: -0.5px;
+  }
+  .cta-heading em { font-style: italic; font-weight: 400; color: var(--orange); }
+  .cta-deco { width: 80px; height: 2px; background: var(--orange); margin: 28px 0; }
+  .cta-phone {
+    font-family: 'Playfair Display', serif; font-size: 20px;
+    font-weight: 700; color: var(--navy); letter-spacing: 1px;
+  }
+  .cta-text {
+    font-size: 15px; color: var(--text-muted); line-height: 1.8;
+    margin-bottom: 36px; font-weight: 300;
+  }
+  .cta-btns { display: flex; gap: 16px; align-items: center; }
+  .btn-dark {
+    background: var(--navy); color: var(--white); padding: 16px 36px;
+    font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; display: inline-block;
+    transition: all 0.25s; border: 2px solid var(--navy);
+    cursor: pointer;
+  }
+  .btn-dark:hover { background: var(--orange); border-color: var(--orange); }
+  .btn-ghost-dark {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+    border-bottom: 1px solid rgba(24,38,82,0.2);
+    padding-bottom: 2px; transition: all 0.2s;
+  }
+  .btn-ghost-dark:hover { color: var(--orange); border-color: var(--orange); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy);
+    padding: 48px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700; color: var(--white);
+    letter-spacing: 2px;
+  }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero-split { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { min-height: 100vh; }
+    .stats-bar { grid-template-columns: repeat(3, 1fr); }
+    .stats-bar-item:nth-child(3) { border-right: none; }
+    .svc-card-grid { grid-template-columns: 1fr 1fr; }
+    .svc-featured { grid-column: span 2; }
+    .pb-steps { grid-template-columns: 1fr; }
+    .pb-steps::before { display: none; }
+    .pb-step { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px; margin-bottom: 40px; }
+    .pb-step:last-child { border-bottom: none; }
+    .testimonial-prestige { grid-template-columns: 1fr; }
+    .tp-side { display: none; }
+    .cta-section { grid-template-columns: 1fr; }
+    .sg-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .sg-desc { max-width: 100%; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero-left { padding: 100px 24px 60px; }
+    .services-grid { padding: 80px 24px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stats-bar-item:nth-child(2), .stats-bar-item:nth-child(4), .stats-bar-item:nth-child(6) { border-right: none; }
+    .stats-bar-item:nth-child(n+5) { display: none; }
+    .svc-card-grid { grid-template-columns: 1fr; }
+    .svc-featured { grid-column: span 1; grid-template-columns: 1fr; }
+    .sf-stat { text-align: left; }
+    .process-band { padding: 80px 24px; }
+    .pb-step { padding: 0 0 40px; }
+    .testimonial-prestige { padding: 80px 24px; }
+    .cta-section { padding: 80px 24px; }
+    footer { padding: 40px 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <div class="logo-mark-outer"></div>
+      <div class="logo-mark-inner"></div>
+    </div>
+    <span class="nav-logo-text">INVICTUS</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Case Studies</a></li>
+    <li><a href="#">Approach</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO SPLIT -->
+<section class="hero-split">
+  <div class="hero-left">
+    <div class="hero-watermark">INVICTUS</div>
+    <div class="hero-eyebrow">Est. 2019 &nbsp;·&nbsp; London, UK</div>
+    <h1 class="hero-headline">
+      We
+      <em>conquer</em>
+      complexity.
+    </h1>
+    <p class="hero-body">Invictus delivers world-class programme and project management across the most demanding sectors — transforming what seems impossible into measurable, sustainable outcomes.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn-navy">View Our Work</a>
+      <a href="#" class="btn-ghost">Meet the team</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="geo-art"></div>
+    <div class="hero-accent-line"></div>
+    <div class="hero-stats-stack">
+      <div class="hero-stat-card">
+        <div class="hsc-num">$2.4<em>B</em></div>
+        <div class="hsc-label">Programme Value</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-num">94<em>%</em></div>
+        <div class="hsc-label">On-Time Rate</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-num">72</div>
+        <div class="hsc-label">Client NPS</div>
+      </div>
+      <div class="hero-stat-card">
+        <div class="hsc-num">284</div>
+        <div class="hsc-label">Programmes Delivered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-item">
+    <div class="sbi-num">$2.4<em>B</em></div>
+    <div class="sbi-label">Programme Value</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="sbi-num">284</div>
+    <div class="sbi-label">Programmes</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="sbi-num">94<em>%</em></div>
+    <div class="sbi-label">On-Time Rate</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="sbi-num">89<em>%</em></div>
+    <div class="sbi-label">Recovery Rate</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="sbi-num">72</div>
+    <div class="sbi-label">Net Promoter Score</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="sbi-num">12</div>
+    <div class="sbi-label">Sectors</div>
+  </div>
+</div>
+
+<!-- SERVICES GRID -->
+<section class="services-grid">
+  <div class="sg-header reveal">
+    <div>
+      <div class="sg-eyebrow">06 Disciplines</div>
+      <h2 class="sg-heading">The standard others<br><em>measure</em> against.</h2>
+    </div>
+    <p class="sg-desc">Every engagement draws on these six disciplines — applied individually or in combination, depending on the challenge. No shortcuts. No compromises.</p>
+  </div>
+
+  <div class="svc-card-grid">
+    <!-- Featured full-width -->
+    <div class="svc-featured reveal">
+      <div class="sf-info">
+        <div class="sf-eyebrow">01 — Flagship Service</div>
+        <div class="sf-title">Programme &amp; Portfolio Management</div>
+        <div class="sf-desc">End-to-end oversight of complex, multi-workstream programmes. From governance design to delivery execution — we hold the line and deliver the outcome.</div>
+      </div>
+      <div class="sf-stat">
+        <div class="sf-stat-num">$2.4B</div>
+        <div class="sf-stat-label">programme value managed</div>
+      </div>
+    </div>
+
+    <div class="svc-card reveal">
+      <div class="sc-bg-num">02</div>
+      <div class="sc-num">02 — Core</div>
+      <div class="sc-title">Agile &amp; Hybrid Delivery</div>
+      <div class="sc-desc">Scalable frameworks that flex to your culture without sacrificing the discipline that gets results.</div>
+      <div class="sc-tag">Core</div>
+      <div class="sc-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+
+    <div class="svc-card reveal">
+      <div class="sc-bg-num">03</div>
+      <div class="sc-num">03 — Specialist</div>
+      <div class="sc-title">Project Recovery &amp; Turnaround</div>
+      <div class="sc-desc">Rapid diagnosis and decisive intervention. We stabilise, re-baseline, and deliver where others have walked away.</div>
+      <div class="sc-tag">Specialist</div>
+      <div class="sc-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+
+    <div class="svc-card reveal">
+      <div class="sc-bg-num">04</div>
+      <div class="sc-num">04 — Core</div>
+      <div class="sc-title">PMO Design &amp; Implementation</div>
+      <div class="sc-desc">PMOs that become your operational backbone — not another layer of bureaucracy.</div>
+      <div class="sc-tag">Core</div>
+      <div class="sc-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+
+    <div class="svc-card reveal">
+      <div class="sc-bg-num">05</div>
+      <div class="sc-num">05 — Core</div>
+      <div class="sc-title">Stakeholder &amp; Change Management</div>
+      <div class="sc-desc">Managing the human dimension — executive alignment through to front-line adoption.</div>
+      <div class="sc-tag">Core</div>
+      <div class="sc-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+
+    <div class="svc-card reveal">
+      <div class="sc-bg-num">06</div>
+      <div class="sc-num">06 — Core</div>
+      <div class="sc-title">Risk, Governance &amp; Reporting</div>
+      <div class="sc-desc">The framework that holds everything together. Robust governance that gives leadership real clarity.</div>
+      <div class="sc-tag">Core</div>
+      <div class="sc-arrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS BAND -->
+<section class="process-band">
+  <div class="pb-header reveal">
+    <div class="pb-eyebrow">How We Work</div>
+    <h2 class="pb-heading">Three steps to <em>clarity.</em></h2>
+  </div>
+  <div class="pb-steps">
+    <div class="pb-step reveal">
+      <div class="pb-step-num">01</div>
+      <div class="pb-step-title">Diagnose &amp; Define</div>
+      <div class="pb-step-desc">We go deep. Understanding the real problem — not just the symptoms — before committing to any course of action. Honest assessment. No spin.</div>
+    </div>
+    <div class="pb-step reveal">
+      <div class="pb-step-num">02</div>
+      <div class="pb-step-title">Design &amp; Align</div>
+      <div class="pb-step-desc">We build the governance, frameworks, and alignment that give your programme the structure it needs. Built around your organisation — not a generic template.</div>
+    </div>
+    <div class="pb-step reveal">
+      <div class="pb-step-num">03</div>
+      <div class="pb-step-title">Deliver &amp; Sustain</div>
+      <div class="pb-step-desc">We execute with discipline and transfer the capability so your team can hold the line long after we've moved on. Outcomes, not outputs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-prestige">
+  <div class="tp-side">Client Voice</div>
+  <div class="tp-body reveal">
+    <div class="tp-quote-mark">"</div>
+    <p class="tp-text">Invictus didn't just recover our programme — they transformed how our entire organisation thinks about delivery. The discipline they brought was transformational at every level.</p>
+    <div class="tp-attr">
+      <div class="tp-avatar">JM</div>
+      <div>
+        <div class="tp-name">James Morrison</div>
+        <div class="tp-role">Chief Programme Officer · Global Infrastructure Group</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="reveal">
+    <div class="sg-eyebrow">The Invictus Standard</div>
+    <h2 class="cta-heading">Ready to raise<br>the <em>standard?</em></h2>
+    <div class="cta-deco"></div>
+    <div class="cta-phone">+44 (0) 20 7946 0958</div>
+  </div>
+  <div class="reveal">
+    <p class="cta-text">Let's discuss your programme challenges with complete transparency. We'll tell you honestly where we can add value — and where we might not be the right fit. No hard sell. No fluff.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-dark">Start a Conversation</a>
+      <a href="#" class="btn-ghost-dark">View case studies</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <div class="logo-mark">
+      <div class="logo-mark-outer"></div>
+      <div class="logo-mark-inner"></div>
+    </div>
+    INVICTUS
+  </div>
+  <div class="footer-copy">© 2025 Invictus Group. All rights reserved.</div>
+</footer>
+
+<script>
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }
+</script>
+</body>
+</html>
